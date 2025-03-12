@@ -1,24 +1,20 @@
-# Zbyněk Bašník - CV
+# Zbyněk Bašník - Resume
 
-Toto je můj profesionální životopis ve formě stylizované webové stránky s designem inspirovaným vývojovým prostředím.
+This is my professional resume in the form of a stylized web page with a design inspired by development environments.
 
-## Obsah
+## Contents
+- Professional Experience
+- Technical Skills
+- Language Proficiency
+- Certifications
+- Education
+- Contact Information
 
-- Profesní zkušenosti
-- Technické dovednosti
-- Jazykové znalosti
-- Certifikace
-- Vzdělání
-- Kontaktní informace
+## Technology
+The resume is created using HTML and CSS with a design inspired by modern IDEs.
 
-## Technologie
-
-Životopis je vytvořen pomocí HTML a CSS s designem inspirovaným moderními IDE.
-
-## Zobrazení
-
-Tato webová stránka je hostována pomocí GitHub Pages a je dostupná na adrese: [zbynekbasnik.github.io/cv](https://basnikZ.github.io/resume/) (po aktivaci GitHub Pages).
+## View
+This web page is hosted using GitHub Pages and is available at: [zbynekbasnik.github.io/resume](https://basnikz.github.io/resume/).
 
 ---
-
-*Poslední aktualizace: 2023* 
+*Last updated: 2025*
