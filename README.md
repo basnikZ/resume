@@ -17,7 +17,7 @@ Toto je můj profesionální životopis ve formě stylizované webové stránky 
 
 ## Zobrazení
 
-Tato webová stránka je hostována pomocí GitHub Pages a je dostupná na adrese: [zbynekbasnik.github.io/cv](https://zbynekbasnik.github.io/cv) (po aktivaci GitHub Pages).
+Tato webová stránka je hostována pomocí GitHub Pages a je dostupná na adrese: [zbynekbasnik.github.io/cv](https://basnikZ.github.io/resume/) (po aktivaci GitHub Pages).
 
 ---
 
