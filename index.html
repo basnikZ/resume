@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zbyněk Bašník - Senior QA Specialist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Source+Code+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* VS Code inspired color scheme */
+            --bg-color: #1e1e1e;
+            --sidebar-color: #252526;
+            --header-color: #3c3c3c;
+            --text-color: #d4d4d4;
+            --text-light: #a7a7a7;
+            --accent-blue: #569cd6;
+            --accent-green: #4ec9b0;
+            --accent-orange: #ce9178;
+            --accent-yellow: #dcdcaa;
+            --accent-pink: #c586c0;
+            --method-color: #dcdcaa;
+            --string-color: #ce9178;
+            --number-color: #b5cea8;
+            --type-color: #4ec9b0;
+            --keyword-color: #569cd6;
+            --comment-color: #6a9955;
+            --border-color: #404040;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Source Code Pro', monospace;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        /* IDE style tabs */
+        .tabs {
+            display: flex;
+            background-color: var(--sidebar-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 8px 20px;
+            font-size: 13px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border-right: 1px solid var(--border-color);
+            cursor: default;
+        }
+
+        .tab.active {
+            background-color: var(--bg-color);
+            border-bottom: 2px solid var(--accent-blue);
+        }
+
+        .tab-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .tab-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            background-color: var(--accent-blue);
+            opacity: 0.8;
+            border-radius: 2px;
+        }
+
+        /* Status bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--header-color);
+            color: var(--text-light);
+            padding: 4px 10px;
+            font-size: 12px;
+        }
+        
+        .status-item {
+            margin-right: 15px;
+        }
+        
+        .header {
+            display: flex;
+            background-color: var(--header-color);
+            color: var(--text-color);
+            padding: 40px;
+        }
+        
+        .profile-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 4px;
+            background-color: var(--sidebar-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 30px;
+            overflow: hidden;
+            border: 1px solid var(--accent-blue);
+        }
+        
+        .profile-img span {
+            font-size: 64px;
+            color: var(--accent-blue);
+        }
+        
+        .header-content {
+            flex: 1;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            color: var(--accent-blue);
+        }
+        
+        .tagline {
+            font-size: 16px;
+            color: var(--accent-green);
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        
+        .contact-item {
+            margin-right: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+        }
+        
+        .contact-item i {
+            margin-right: 8px;
+            color: var(--accent-yellow);
+            font-style: normal;
+        }
+        
+        .main {
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 30%;
+            background-color: var(--sidebar-color);
+            padding: 30px;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .content {
+            width: 70%;
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .line-numbers {
+            position: absolute;
+            left: -20px;
+            top: 0;
+            color: var(--text-light);
+            font-size: 12px;
+            text-align: right;
+            user-select: none;
+            opacity: 0.5;
+        }
+
+        .line-number {
+            display: block;
+            line-height: 1.5;
+            padding-right: 5px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            color: var(--method-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title.function::after {
+            content: "()";
+            color: var(--method-color);
+        }
+
+        .keyword {
+            color: var(--keyword-color);
+        }
+
+        .type {
+            color: var(--type-color);
+        }
+
+        .string {
+            color: var(--string-color);
+        }
+
+        .number {
+            color: var(--number-color);
+        }
+
+        .comment {
+            color: var(--comment-color);
+            font-style: italic;
+        }
+        
+        .skill-item {
+            margin-bottom: 12px;
+        }
+        
+        .skill-name {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        
+        .skill-bar {
+            height: 6px;
+            background-color: var(--sidebar-color);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .skill-percentage {
+            height: 100%;
+            background-color: var(--accent-green);
+        }
+        
+        .job {
+            margin-bottom: 30px;
+            padding-left: 15px;
+            position: relative;
+            border-left: 1px solid var(--accent-blue);
+        }
+        
+        .job-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+        
+        .job-company {
+            font-weight: bold;
+            color: var(--accent-yellow);
+        }
+        
+        .job-date {
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+        
+        .job-description ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+        
+        .job-description li {
+            margin-bottom: 8px;
+            font-size: 13px;
+            position: relative;
+            padding-left: 15px;
+            line-height: 1.5;
+        }
+
+        .job-description li::before {
+            content: "// ";
+            position: absolute;
+            left: 0;
+            color: var(--comment-color);
+        }
+        
+        .language-item {
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        
+        .language-name {
+            font-weight: bold;
+            color: var(--accent-yellow);
+        }
+        
+        .language-level {
+            color: var(--text-light);
+        }
+        
+        .interests {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .interest-item {
+            background-color: var(--header-color);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .summary-content {
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        
+        .cert-item {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 15px;
+            font-size: 13px;
+        }
+
+        .cert-item::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-orange);
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: var(--accent-green);
+            font-size: 13px;
+        }
+
+        .code-block {
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .links {
+            margin-top: 15px;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .link-icon {
+            margin-right: 8px;
+            color: var(--accent-orange);
+        }
+
+        .link-url {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .link-url:hover {
+            text-decoration: underline;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0.5cm;
+            }
+            
+            body {
+                background-color: white;
+                color: #333;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .container {
+                max-width: 100%;
+                box-shadow: none;
+                background-color: white;
+            }
+
+            .tabs, .status-bar {
+                display: none;
+            }
+
+            .header {
+                background-color: #f5f5f5;
+                color: #333;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .profile-img {
+                border: 1px solid #666;
+                background-color: white;
+            }
+
+            .profile-img span {
+                color: #0066cc;
+            }
+
+            h1 {
+                color: #0066cc;
+            }
+
+            .sidebar {
+                background-color: #f9f9f9;
+                color: #333;
+                border-right: 1px solid #ddd;
+            }
+
+            .content {
+                color: #333;
+            }
+
+            .section-title {
+                color: #0066cc;
+                border-bottom-color: #ccc;
+            }
+
+            .job-title {
+                color: #0066cc;
+            }
+
+            .job-company {
+                color: #333;
+            }
+
+            .skill-percentage {
+                background-color: #0066cc;
+            }
+
+            .interest-item {
+                background-color: #f0f0f0;
+                color: #333;
+                border: 1px solid #ccc;
+            }
+
+            .language-name {
+                color: #0066cc;
+            }
+
+            .job {
+                border-left-color: #0066cc;
+            }
+
+            .job-description li::before,
+            .cert-item::before {
+                color: #666;
+            }
+
+            code {
+                background-color: #f0f0f0;
+                color: #0066cc;
+            }
+
+            .keyword, .type, .string, .number, .comment {
+                color: #333;
+            }
+
+            /* Page break optimization */
+            .main {
+                page-break-inside: avoid;
+            }
+
+            .content {
+                page-break-before: auto;
+            }
+
+            .job {
+                page-break-inside: avoid;
+            }
+
+            .line-numbers {
+                display: none;
+            }
+
+            .link-url {
+                color: #0066cc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active">
+                <a href="https://linkedin.com/in/zbynekbasnik" target="_blank" style="text-decoration: none; color: inherit;">
+                    <div class="tab-title">
+                        <span class="tab-icon"></span>
+                        resume.html
+                        <resume class="html"></resume>
+                    </div>
+                </a>
+            </div>
+            <div class="tab">
+                <a href="https://github.com/basnikZ" target="_blank" style="text-decoration: none; color: inherit;">
+                    <div class="tab-title">
+                        <span class="tab-icon"></span>
+                        github/profile
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="status-bar">
+            <div class="status-left">
+                <span class="status-item">main</span>
+                <span class="status-item">UTF-8</span>
+                <span class="status-item">Senior-QA-Engineer</span>
+            </div>
+            <div class="status-right">
+                <span class="status-item">Ln 1, Col 1</span>
+            </div>
+        </div>
+        <div class="header">
+            <div class="profile-img">
+                <span>ZB</span>
+            </div>
+            <div class="header-content">
+                <h1>ZBYNĚK BAŠNÍK</h1>
+                <div class="tagline">Senior QA Specialist | <span class="number">11+</span> years of experience</div>
+                <div class="code-block">
+                    <span class="keyword">const</span> <span class="type">philosophy</span> = <span class="string">"Quality is not an act, it is a habit - Aristotle";</span><br>
+                    <span class="keyword">function</span> <span class="method-color">deliverQuality</span>() => <span class="comment">// My daily mission</span>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i>@</i> zbynek.basnik@gmail.com
+                    </div>
+                    <div class="contact-item">
+                        <i>$</i> +420 773 050 034
+                    </div>
+                    <div class="contact-item">
+                        <i>&</i> Brno, Czech Republic
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <div class="sidebar">
+                <div class="section">
+                    <div class="section-title function">aboutMe</div>
+                    <div class="summary-content">
+                        <span class="comment">/* Professional Summary */</span><br>
+                        Dedicated QA professional with <span class="number">11+</span> years of extensive experience in software quality. Passionate about developing innovative automation solutions and ensuring product excellence. Specialized in delivering high-quality software for critical applications, with strong technical skills and leadership capabilities.
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title function">getSkills</div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="keyword">import</span> <span class="type">AI</span>.<span class="keyword">models</span></span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 95%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="keyword">assert</span>(<span class="type">QA</span>.<span class="string">"expertise"</span>)</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 98%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="type">Test</span>.strategy()</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 94%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="type">JIRA</span>.manage()</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="type">Postman</span>.<span class="keyword">post</span>(<span class="string">"/api"</span>)</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="type">REST</span>.<span class="keyword">request</span>()</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 90%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="type">SQL</span></span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="keyword">class</span> <span class="type">CSharp</span> { }</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="type">Appium</span>.mobile()</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 65%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="keyword">import</span> <span class="type">Python</span></span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name"><span class="type">Ruby</span>::<span class="keyword">Watir</span></span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title function">getLanguages</div>
+                    <div class="language-item">
+                        <span class="skill-name"><span class="type">Czech</span>.level(<span class="string">"native"</span>)</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="language-item">
+                        <span class="skill-name"><span class="type">English</span>.level(<span class="string">"C1"</span>)</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                    <div class="language-item">
+                        <span class="skill-name"><span class="type">Spanish</span>.level(<span class="string">"A1"</span>)</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                    <div class="language-item">
+                        <span class="skill-name"><span class="type">German</span>.level(<span class="string">"A1"</span>)</span>
+                        <div class="skill-bar">
+                            <div class="skill-percentage" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title function">getCertifications</div>
+                    <div class="cert-item">
+                        <span>Certified Product Professional</span>
+                    </div>
+                    <div class="cert-item">
+                        <span>Ruby Programming Language Course</span>
+                    </div>
+                    <div class="cert-item">
+                        <span>Certified Sales Professional</span>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title function">getInterests</div>
+                    <div class="interests">
+                        <div class="interest-item">Psychology</div>
+                        <div class="interest-item">Sociology</div>
+                        <div class="interest-item">Trading</div>
+                        <div class="interest-item">Programming</div>
+                        <div class="interest-item">Life Automation</div>
+                        <div class="interest-item">Gaming</div>
+                        <div class="interest-item">Travel</div>
+                        <div class="interest-item">Electronics</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <div class="section-title function">getEducation</div>
+                    <div class="job">
+                        <div class="job-title">SOŠ Strážnice</div>
+                        <div class="job-date"><span class="number">2004</span> - <span class="number">2008</span></div>
+                        <div class="job-description">
+                            Engineering - Computer focused
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <div class="section-title function">getWorkExperience</div>
+                    
+                    <div class="job">
+                        <div class="job-title">Quality Assurance Contractor</div>
+                        <div class="job-company">EmbedIT</div>
+                        <div class="job-date">November <span class="number">2020</span> - Present (<span class="number">4</span> years <span class="number">5</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Successfully ensuring quality of critical software solutions in the financial sector</li>
+                                <li>Implementing and optimizing testing procedures in agile development environment</li>
+                                <li>Leading API and web application testing initiatives with excellent results</li>
+                                <li>Designing and implementing efficient test automation frameworks</li>
+                                <li>Mentoring team members and improving overall quality processes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">QA Analyst Contractor</div>
+                        <div class="job-company">ORIFLAME SOFTWARE</div>
+                        <div class="job-date">August <span class="number">2019</span> - August <span class="number">2020</span> (<span class="number">1</span> year <span class="number">1</span> month)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Architected and implemented a comprehensive Postman framework from scratch</li>
+                                <li>Led REST API testing initiatives with high attention to detail</li>
+                                <li>Developed advanced automated tests in C#, providing technical guidance to colleagues</li>
+                                <li>Applied expert SQL database knowledge for complex testing scenarios</li>
+                                <li>Created thorough test designs and execution strategies for critical features</li>
+                                <li>Successfully demonstrated newly developed features to stakeholders bi-weekly</li>
+                                <li>Implemented autonomous and agile work methodologies that improved team efficiency</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">QA Analyst</div>
+                        <div class="job-company">Mycroft Mind, a.s.</div>
+                        <div class="job-date">May <span class="number">2018</span> - July <span class="number">2019</span> (<span class="number">1</span> year <span class="number">3</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Successfully integrated optimal testing procedures into scrum/agile development cycle</li>
+                                <li>Expertly analyzed customer requirements to ensure complete fulfillment</li>
+                                <li>Effectively managed quality across multiple concurrent projects with strict deadlines</li>
+                                <li>Designed robust automation framework that improved testing efficiency</li>
+                                <li>Developed comprehensive automated test cases with Ruby/Watir</li>
+                                <li>Created innovative use-cases focused on UX/UI for startup project</li>
+                                <li>Established clear communication channels and quality standards with development team</li>
+                                <li>Produced detailed QA artifacts that improved project documentation quality</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">QA Manager Contractor</div>
+                        <div class="job-company">eProvement</div>
+                        <div class="job-date">August <span class="number">2017</span> - December <span class="number">2018</span> (<span class="number">1</span> year <span class="number">5</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Thoroughly reviewed quality specifications and technical design documents</li>
+                                <li>Successfully maintained quality across diverse projects and implemented optimal procedures</li>
+                                <li>Expertly assessed complex customer requirements to ensure complete fulfillment</li>
+                                <li>Established effective communication channels with development teams</li>
+                                <li>Efficiently estimated, prioritized and coordinated quality testing activities</li>
+                                <li>Implemented comprehensive bug tracking methodology that improved issue resolution</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">Influencer Relations Manager</div>
+                        <div class="job-company">MADFINGER Games, a.s.</div>
+                        <div class="job-date">January <span class="number">2016</span> - January <span class="number">2017</span> (<span class="number">1</span> year <span class="number">1</span> month)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Established valuable connections with key music producers and content creators</li>
+                                <li>Developed and maintained strategic relationships with influential industry partners</li>
+                                <li>Successfully researched and utilized specialized platforms for influencer outreach</li>
+                                <li>Created innovative digital marketing initiatives that increased brand visibility</li>
+                                <li>Developed successful go-to-market strategies for major game releases</li>
+                                <li>Represented company professionally at Gamescom 2016, securing valuable partnerships</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">Senior QA Engineer</div>
+                        <div class="job-company">MADFINGER Games, a.s.</div>
+                        <div class="job-date">December <span class="number">2014</span> - December <span class="number">2015</span> (<span class="number">1</span> year <span class="number">1</span> month)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Successfully managed complex building systems for game development</li>
+                                <li>Effectively handled administration, team education, and project management tools</li>
+                                <li>Facilitated seamless communication between teams to ensure workflow efficiency</li>
+                                <li>Designed and delivered impactful company training sessions for professional growth</li>
+                                <li>Created comprehensive test cases that improved product quality metrics</li>
+                                <li>Made valuable contributions to software development through UX/design insights</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">Junior Test Engineer</div>
+                        <div class="job-company">AVG Technologies</div>
+                        <div class="job-date">June <span class="number">2014</span> - November <span class="number">2014</span> (<span class="number">6</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Conducted thorough testing for security software applications</li>
+                                <li>Gained valuable experience in structured testing methodologies</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">QA Technician</div>
+                        <div class="job-company">2K Czech</div>
+                        <div class="job-date">August <span class="number">2012</span> - May <span class="number">2014</span> (<span class="number">1</span> year <span class="number">10</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Performed detailed product and editor testing for AAA game titles</li>
+                                <li>Developed efficient unit and acceptance testing suites</li>
+                                <li>Created comprehensive tutorial documentation for onboarding</li>
+                                <li>Successfully participated in candidate interview process</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">Apple Sales Professional</div>
+                        <div class="job-company">iStyle CZ</div>
+                        <div class="job-date">March <span class="number">2011</span> - August <span class="number">2012</span> (<span class="number">1</span> year <span class="number">6</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Provided expert product knowledge and customer service</li>
+                                <li>Achieved consistent sales targets through consultative approach</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="job">
+                        <div class="job-title">QA Technician</div>
+                        <div class="job-company">2K Czech</div>
+                        <div class="job-date">February <span class="number">2010</span> - August <span class="number">2010</span> (<span class="number">7</span> months)</div>
+                        <div class="job-description">
+                            <ul>
+                                <li>Conducted thorough product and editor testing</li>
+                                <li>Provided valuable support to team during critical development phases</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="status-bar">
+            <div class="status-left">
+                <span class="status-item">ready</span>
+            </div>
+            <div class="status-right">
+                <span class="status-item">CV-Version: <span class="number">2.3.1</span></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
